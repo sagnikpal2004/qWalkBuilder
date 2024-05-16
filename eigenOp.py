@@ -1,6 +1,6 @@
 import numpy as np
 import qiskit as qk
-import runQC
+import qWalkBuilder.runQC as runQC
 
 def getEigenValues(qc: qk.QuantumCircuit) -> np.ndarray:
   unitaryMatrix = runQC.getUnitaryMatrix(qc)

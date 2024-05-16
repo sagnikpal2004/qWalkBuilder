@@ -38,7 +38,7 @@ def basis_measurement(qc: qk.QuantumCircuit, basisList: list[list[complex]]):
     resultProbs.append(curProb)
   return resultProbs
 
-import buildQC
+import qWalkBuilder.buildQC as buildQC
 def eigenBasis_measurement(qc: qk.QuantumCircuit, coin: buildQC.Coin = buildQC.Coin.hadamard):
   shiftCoinQC = buildQC.build16nTQW(1, coin)
   shiftCoin = getUnitaryMatrix(shiftCoinQC).data
