@@ -2,6 +2,7 @@ import qiskit as qk
 import qiskit_aer as qkA
 
 from .walk_operators import Coin, Shift, Init
+from .quantum_circuit import QuantumCircuit
 
 
 class QuantumWalk:
@@ -10,7 +11,7 @@ class QuantumWalk:
         self.shift = Shift(shift)
         self.init = Init(init)
 
-    def time(self, time):
+    def time(self, time: int):
         c = self.coin.qubits
         v = self.shift.qubits
         qc = QuantumCircuit(c+v)
@@ -23,9 +24,9 @@ class QuantumWalk:
 
         return qc
     
-    def run(self):
-        pass
-
-class QuantumCircuit(qk.QuantumCircuit):
-    def run(self):
-        pass
+    def __str__(self):
+        return f"QuantumWalk(
+            coin={self.coin}, 
+            shift={self.shift}, 
+            init={self.init},
+        )"

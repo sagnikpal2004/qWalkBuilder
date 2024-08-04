@@ -26,3 +26,13 @@ To install the `qWalkBuilder` library, follow these steps:
     ```
 
 ## Example Usage
+Build a quantum walk with a two-qubit Hadamard coin and a 4x4 node Torus shift operator, initializing from a single node state.\
+Measure at time 10 on the Z-basis and print the probabilities for each state
+```python
+import qWalkBuilder as qWB
+
+qw = qWB.QuantumWalk("H.2", "T.[4,4]", "singleNode")
+
+result = qw.time(10).run("measure_z")
+print(f"Probabilities: {result}")
+```
