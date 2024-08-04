@@ -1,0 +1,17 @@
+[project]
+name = "qWalkBuilder"
+description = ""
+version = "0.1.0"
+
+authors = [{ name = "Sagnik Pal" }]
+
+dependencies = [
+    "qiskit",
+    "qiskit-aer",
+]
+
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.urls]
+Repository = "https://github.com/sagnikpal2004/qWalkBuilder"
