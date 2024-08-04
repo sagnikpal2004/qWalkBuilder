@@ -15,3 +15,8 @@ license = { text = "MIT" }
 
 [project.urls]
 Repository = "https://github.com/sagnikpal2004/qWalkBuilder"
+
+[tools.setuptools]
+packages = [
+    "qWalkBuilder",
+]
