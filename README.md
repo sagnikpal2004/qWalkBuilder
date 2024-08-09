@@ -36,3 +36,12 @@ qw = qWB.QuantumWalk("H.2", "T.[4,4]", "singleNode")
 result = qw.time(10).run("measure_z")
 print(f"Probabilities: {result}")
 ```
+
+## Codes
+### Shift
+- `16nT`: 4x4 node Torus
+### Coin
+- `H`: Hadamard
+### Init
+- `uniform`: Uniform superpositon over all qubits
+- `single`: No superposition
