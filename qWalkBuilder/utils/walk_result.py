@@ -23,19 +23,15 @@ class Result(list[float]):
         return f"{self.metadata['circuit']}.run({self.metadata['run']})\n" + str(np.around(self, 5))
 
 
-# #TODO: Feature where walk runs live on the csv file, and plt updates live
-# class Results(pd.DataFrame):
-#     def __init__(self, filename, no_cache: bool = False):
-#         self.no_cache = no_cache
-#         super().__init__()
+#TODO: Feature where walk runs live on the csv file, and plt updates live
+class Results(pd.DataFrame):
+    def __init__(self, results: list[list[float]], metadata, filename):
+        self.metadata = metadata
+        # if not filename:
+        #     filename = "./qWalk_cache/{shiftCode}.{coinCode}.{basisCode}.{initCode}.csv".format(**metadata) # TODO: fix this
+        self.filename = filename
 
-#     # def __init__(self, results: list[list[float]], metadata, filename):
-#     #     self.metadata = metadata
-#     #     if not filename:
-#     #         filename = "./qWalk_cache/{shiftCode}.{coinCode}.{basisCode}.{initCode}.csv".format(**metadata)
-#     #     self.filename = filename
-
-#     #     super().__init__([Result(result) for result in results])
+        super().__init__([Result(result, metadata={**metadata, "atTime": t}) for t, result in enumerate(results)])
 
 #     def append(self, result: list[float]):
 #         with open(self.filename, 'a') as file:

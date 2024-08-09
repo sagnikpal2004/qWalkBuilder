@@ -1,9 +1,9 @@
-from functools import cache
-
-from .utils.register_list import RegisterList
 from .operators.shiftcoin import ShiftCoin
 from .operators.init import Init
 from .operators.circuit import QWalkCircuit
+
+from .utils.register_list import RegisterList
+from .utils.walk_result import Results
 
 
 class QuantumWalk:
@@ -26,18 +26,21 @@ class QuantumWalk:
 
         qc = QWalkCircuit(*self.qRegs, metadata={"qWalk": self, "atTime": time})
         qc.append(self.init, self.qRegs.qubits)
-        for i in range(time):
+        for t in range(time):
             qc.append(self.shiftCoin, self.qRegs.qubits)
 
         if not self.no_cache:
             self._cache[time] = qc
         return qc
     
-    # # TODO: Run for a longer time
-    # def run(self):
-    #     resultViewer = Results()
+    # TODO: Run for a longer time
+    def run(self, method: str, time: int = 20):
+        resultViewer = Results(qwalk=self)
 
-    #     return resultViewer
+        for t in range(time):
+            resultViewer.append(self.atTime(t).run(method))
+
+        return resultViewer
 
 
     def __str__(self):

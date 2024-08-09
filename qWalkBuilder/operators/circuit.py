@@ -8,17 +8,17 @@ from . import Operator
 
 class QWalkCircuit(Operator):
     
-    def run(self, operation: str, **kwargs):
-        if operation == "measure_basis":
+    def run(self, method: str, **kwargs):
+        if method == "measure_basis":
             result = self.measure_basis(kwargs["basisList"])
-        elif operation == "measure_eigen":
+        elif method == "measure_eigen":
             result = self.measure_eigen()
-        elif operation == "measure_z":
+        elif method == "measure_z":
             result = self.measure_z()
         else:
             raise ValueError()
 
-        return Result(result, metadata={**self.metadata, "circuit": self, "run": operation})
+        return Result(result, metadata={**self.metadata, "circuit": self, "run": method})
 
 
     def measure_basis(self, basisList: list[list[complex]]):
