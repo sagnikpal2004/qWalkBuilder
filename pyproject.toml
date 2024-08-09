@@ -8,6 +8,10 @@ authors = [{ name = "Sagnik Pal" }]
 dependencies = [
     "qiskit",
     "qiskit-aer",
+
+    "matplotlib",
+    "networkx",
+    "pandas"
 ]
 
 readme = "README.md"

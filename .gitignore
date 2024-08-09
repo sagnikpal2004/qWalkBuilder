@@ -162,4 +162,5 @@ cython_debug/
 #.idea/
 
 # TODO: Remove this
-**/*.old
+.vscode/
+tests/

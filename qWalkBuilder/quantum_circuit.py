@@ -2,13 +2,32 @@ import qiskit as qk
 import qiskit_aer as qka
 import numpy as np
 
+from .utils import Result
+
 
 class QuantumCircuit(qk.QuantumCircuit):
-    def run(self):
-        pass
+    
+    def run(self, operation: str, **kwargs):
+        if operation == "measure_basis":
+            result = self.measure_basis(**kwargs)
+        # elif operation == "measure_eigen":
+        #     result = self.measure_eigen()
+        elif operation == "measure_z":
+            result = self.measure_z()
+        else:
+            raise ValueError()
+
+        return Result(result)
 
 
-    def basis_measurement(self, basisList: list[list[complex]]):
+    def measure_basis(self, basisList: list[list[complex]]):
+        if basisList is None:
+            raise ValueError()
+        if len(basisList) != 2**self.num_qubits:
+            raise ValueError()
+        if any(len(basis) != 2**self.num_qubits for basis in basisList):
+            raise ValueError()
+
         curState = self.getStateVector()
 
         resultProbs = []
@@ -18,32 +37,32 @@ class QuantumCircuit(qk.QuantumCircuit):
         return resultProbs
     
     # TODO: Get shiftCoin unitary
-    # def eigenBasis_measurement(self):
+    # def measure_eigen(self):
     #     shiftCoin =
     #     eigenVectors = np.linalg.eig(shiftCoin)[1].T
 
-    #     return self.basis_measurement(eigenVectors)
+    #     return self.measure_basis(eigenVectors)
     
-    def z_measurement(self):
+    def measure_z(self):
         zBasis = np.eye(2**self.num_qubits)
-        return self.basis_measurement(zBasis)
+        return self.measure_basis(zBasis)
 
 
-    def getUnitaryMatrix(self):
+    def getUnitary(self):
         backend = qka.Aer.get_backend('unitary_simulator')
         t_qc = qk.transpile(self, backend)
         job = backend.run(t_qc)
         
         return job.result().get_unitary()
     
-    def getStateVector(self):
+    def getState(self):
         backend = qka.Aer.get_backend('statevector_simulator')
         t_qc = qk.transpile(self, backend)
         job = backend.run(t_qc)
 
         return job.result().get_statevector()
     
-    def qasm_simulator(self, shots: int = 4096):
+    def simulate_qasm(self, shots: int = 4096):
         self.measure_all()
 
         backend = qka.Aer.get_backend('qasm_simulator')

@@ -1,32 +1,37 @@
 import qiskit as qk
 import qiskit_aer as qkA
 
-from .walk_operators import Coin, Shift, Init
+from .utils.walk_register import RegisterList
+from .walk_operators.shiftCoin import ShiftCoin
+from .walk_operators.init import Init
 from .quantum_circuit import QuantumCircuit
 
 
 class QuantumWalk:
-    def __init__(self, coin="H.2", shift="T.[4,4]", init="singleNode"):
-        self.coin = Coin(coin)
-        self.shift = Shift(shift)
-        self.init = Init(init)
+    """ TODO: Add docstring """
 
-    def time(self, time: int):
-        c = self.coin.qubits
-        v = self.shift.qubits
-        qc = QuantumCircuit(c+v)
+    def __init__(self, shiftCoin, init="uniform"):
+        self.qRegs = RegisterList(shiftCoin)
+
+        self.shiftCoin = ShiftCoin(shiftCoin, self.qRegs)
+        self.init = Init(init, self.qRegs)
+
+
+    # TODO: add optimization by caching state at time steps
+    def atTime(self, time: int):
+        qc = QuantumCircuit(*self.qRegs)
         
-        # Append quantum walk operators
-        qc.append(self.init, c+v)
+        qc.append(self.init, self.qRegs.qubits)
         for i in range(time):
-            qc.append(self.coin, c)
-            qc.append(self.shift, c+v)
+            qc.append(self.shiftCoin, self.qRegs.qubits)
 
         return qc
     
+    # # TODO: Run for a longer time
+    # def run(self):
+    #     resultViewer = Results()
+
+    #     return resultViewer
+    
     def __str__(self):
-        return f"QuantumWalk(
-            coin={self.coin}, 
-            shift={self.shift}, 
-            init={self.init},
-        )"
+        return f"QuantumWalk(coin={self.shiftCoin.coin.name}, shift={self.shiftCoin.shift.name}, init={self.init.name})"
